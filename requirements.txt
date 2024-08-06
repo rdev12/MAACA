@@ -1,0 +1,11 @@
+numpy
+pandas
+sklearn
+torch
+pytorchvideo
+transformers
+pydub
+torchvision
+omegaconf
+wandb
+timm

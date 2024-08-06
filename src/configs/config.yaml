@@ -1,0 +1,49 @@
+ # Copyright (c) 2022, salesforce.com, inc.
+ # All rights reserved.
+ # SPDX-License-Identifier: BSD-3-Clause
+ # For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+
+model:
+  arch: alpro_qa_audio
+  num_classes: 7
+  load_finetuned: False
+  load_pretrained: False
+  max_txt_len: 128
+
+  audio_encoder: "openai/whisper-small"
+
+  # finetuned: "/home/rishikesh_2001cs85/Video Complaint Identification/LAVIS/output/alpro_retrieval_original_4/pytorch_model.bin"
+  # finetuned: "/home/rishikesh_2001cs85/Video Complaint Identification/LAVIS/output_alpro_gan_fusion_aspect/model.pt"
+  # finetuned: "https://storage.googleapis.com/sfr-vision-language-research/LAVIS/models/ALPRO/alpro_msvd_qa.pth"
+  # finetuned: "/home/rishikesh_2001cs85/Video Complaint Identification/LAVIS/output_alpro_audio_complaint/checkpoint-500/pytorch_model.bin"
+  # finetuned: /home/rishikesh_2001cs85/Video Complaint Identification/LAVIS/output_alpro_audio_aspect/checkpoint-324/pytorch_model.bin
+  # pretrained: "https://storage.googleapis.com/sfr-vision-language-research/LAVIS/models/ALPRO/alpro_pretrain.pt"
+
+  timesformer:
+    n_frms: 16
+    image_size: 224
+    patch_size: 16
+    attn_drop_rate: 0.
+    drop_rate: 0.
+    drop_path_rate: 0.1
+    use_grad_ckpt: True
+    ckpt_layer: 12
+
+  # bert config
+  med_config_path: "../configs/bert_config_alpro2.json"
+
+preprocess:
+  vis_processor:
+      train:
+        name: "alpro_video_train"
+        n_frms: 16
+        image_size: 224
+      eval:
+        name: "alpro_video_eval"
+        n_frms: 16
+        image_size: 224
+  text_processor:
+      train:
+        name: "blip_caption"
+      eval:
+        name: "blip_caption"
