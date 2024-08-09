@@ -5,8 +5,6 @@
  For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 """
 
-from warnings import warn
-
 import torch
 import torch.nn.functional as F
 from omegaconf import OmegaConf
@@ -199,15 +197,12 @@ class MAACA(nn.Module):
         aspect_prediction = self.aspect_head(fused_output)
 
         if is_train:
-            # import pdb; pdb.set_trace()
-            # print(prediction)
             complaint_loss = F.cross_entropy(complaint_prediction, complaint)
             aspect_loss = F.cross_entropy(aspect_prediction, aspect)
             loss = complaint_loss + aspect_loss
 
-            # return {"loss": loss}
             return AlproOutputWithLogits(
-                loss=complaint_loss if self.model_config.num_classes == 2 else aspect_loss,
+                loss=loss,
                 intermediate_output=AlproIntermediateOutput(
                     video_embeds=video_embeds,
                     text_embeds=audio_embeds,

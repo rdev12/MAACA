@@ -46,7 +46,7 @@ from transformers.modeling_utils import (
 from transformers.utils import logging
 from transformers.models.bert.configuration_bert import BertConfig
 
-from .base_model import BaseEncoder
+from src.model.base_model import BaseEncoder
 
 logging.set_verbosity_error()
 logger = logging.get_logger(__name__)

@@ -5,12 +5,13 @@
  For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 """
 import torch
-import transforms_video
-from base_processor import BaseProcessor
-from randaugment import VideoRandomAugment
-import functional_video as F
+from src.processors.base_processor import BaseProcessor
+from src.processors.randaugment import VideoRandomAugment
+import src.processors.functional_video as F
+from src.registry import registry
 from omegaconf import OmegaConf
 from torchvision import transforms
+from src.processors import transforms_video
 from pytorchvideo.transforms import UniformTemporalSubsample
 
 MAX_INT = registry.get("MAX_INT")

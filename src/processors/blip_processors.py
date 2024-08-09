@@ -6,7 +6,7 @@
 """
 import re
 
-from base_processor import BaseProcessor
+from src.processors.base_processor import BaseProcessor
 from omegaconf import OmegaConf
 from torchvision import transforms
 
