@@ -15,7 +15,7 @@ from torchvision.transforms import (
     RandomResizedCrop,
 )
 
-import lavis.processors.functional_video as F
+import src.processors.functional_video as F
 
 
 __all__ = [
