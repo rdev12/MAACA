@@ -30,7 +30,7 @@ model:
     ckpt_layer: 12
 
   # bert config
-  med_config_path: "../configs/bert_config_alpro2.json"
+  med_config_path: "src/configs/bert_config_alpro2.json"
 
 preprocess:
   vis_processor:
@@ -47,3 +47,8 @@ preprocess:
         name: "blip_caption"
       eval:
         name: "blip_caption"
+  audio_processor:
+      train:
+          name: "openai/whisper-small"
+      eval:
+          name: "openai/whisper-small"

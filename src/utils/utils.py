@@ -25,7 +25,7 @@ import yaml
 from iopath.common.download import download
 from iopath.common.file_io import file_lock, g_pathmgr
 from src.utils.dist_utils import download_cached_file
-from lavis.common.registry import registry
+from src.registry import registry
 from torch.utils.model_zoo import tqdm
 from torchvision.datasets.utils import (
     check_integrity,
