@@ -18,10 +18,11 @@ from src.model.timesformer.vit import TimeSformer
 from src.model.lstm_compression import LSTM_fc
 from src.model.base_model import BaseModel
 
+
 class MAACAPretrain(BaseModel):
 
     def __init__(
-        self, visual_encoder, text_encoder, text_encoder2, audio_encoder, config, temp=0.7
+            self, visual_encoder, text_encoder, text_encoder2, audio_encoder, config, temp=0.7
     ):
         super().__init__()
 
@@ -52,7 +53,7 @@ class MAACAPretrain(BaseModel):
         self.atm_head = nn.Linear(768, 2)
 
         self.max_txt_len = self.model_config.max_txt_len
-    
+
     def forward(self, video, audio, text_input, aspect, complaint, is_train=True):
         visual_inputs = video
         audio_inputs = audio
@@ -71,7 +72,7 @@ class MAACAPretrain(BaseModel):
             max_length=self.max_txt_len,
             return_tensors="pt",
         ).to(self.device)
-      
+
         # for text-video
         text_output = self.text_encoder.forward_text(
             text,
@@ -157,7 +158,6 @@ class MAACAPretrain(BaseModel):
             modality="video"
         )
 
-        
         (
             atm_loss,
             atm_logits,
@@ -173,7 +173,6 @@ class MAACAPretrain(BaseModel):
             sim_t2i=sim_t2a.clone(),  # for hard mining
             modality="audio"
         )
-
 
         loss = vtc_loss + atc_loss + vtm_loss + atm_loss
 
@@ -192,7 +191,7 @@ class MAACAPretrain(BaseModel):
         )
 
     def compute_vtm(
-        self, text_embeds, text_atts, image_embeds, image_atts, sim_i2t, sim_t2i, modality
+            self, text_embeds, text_atts, image_embeds, image_atts, sim_i2t, sim_t2i, modality
     ):
         device = self.device
         text_encoder = self.text_encoder if modality == "video" else self.text_encoder2
@@ -252,7 +251,7 @@ class MAACAPretrain(BaseModel):
         video_atts_all = torch.cat([image_atts, image_atts], dim=0)
 
         attention_mask_all = torch.cat([text_atts_all, video_atts_all], dim=1)
-        embedding_output_all = torch.cat([text_embeds_all, video_embeds_all], dim=1) # b, 128 + 197, 768
+        embedding_output_all = torch.cat([text_embeds_all, video_embeds_all], dim=1)  # b, 128 + 197, 768
 
         # forward negative pairs via cross encoder
         encoder_outputs_neg = text_encoder(
@@ -310,8 +309,8 @@ class MAACAPretrain(BaseModel):
         )
 
         num_patches = (
-            visual_encoder_config["image_size"] // visual_encoder_config["patch_size"]
-        ) ** 2
+                              visual_encoder_config["image_size"] // visual_encoder_config["patch_size"]
+                      ) ** 2
         num_frames = visual_encoder_config["n_frms"]
 
         model.load_checkpoint_from_config(

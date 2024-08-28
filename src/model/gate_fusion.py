@@ -2,6 +2,7 @@ import torch
 import math
 from torch import nn
 
+
 class Gate_Attention(nn.Module):
     def __init__(self, num_hidden_a, num_hidden_b, num_hidden):
         super(Gate_Attention, self).__init__()

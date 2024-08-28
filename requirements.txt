@@ -13,3 +13,4 @@ einops
 fairscale
 opencv-python
 accelerate
+pytube

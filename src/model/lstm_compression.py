@@ -1,5 +1,7 @@
 import torch
 from torch import nn
+
+
 class LSTM_fc(nn.Module):
     def __init__(self, input_size, hidden_size, num_layers, output_seq_len, output_size):
         super(LSTM_fc, self).__init__()

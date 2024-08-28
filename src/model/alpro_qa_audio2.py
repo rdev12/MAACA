@@ -19,6 +19,7 @@ from src.model.gate_fusion import Gate_Attention
 from src.model.lstm_compression import LSTM_fc
 from src.model.base_model import BaseModel
 
+
 class FC_head(nn.Module):
     def __init__(self, num_classes, hidden_dim, llm_embed_dim, add_pooling=False):
         super(FC_head, self).__init__()
@@ -44,13 +45,14 @@ class FC_head(nn.Module):
         x = self.fc2(x)
         return x
 
+
 class MAACA(BaseModel):
     def __init__(
-        self, visual_encoder, text_encoder, text_encoder2, audio_encoder, config,
+            self, visual_encoder, text_encoder, text_encoder2, audio_encoder, config,
     ):
         super().__init__()
         self.model_config = config
-         
+
         self.tokenizer = BertTokenizer.from_pretrained("bert-base-uncased")
 
         self.visual_encoder = visual_encoder
@@ -60,12 +62,26 @@ class MAACA(BaseModel):
 
         self.audio_encoder = audio_encoder
 
-        self.transform_audio_to_hidden = LSTM_fc(input_size=768, hidden_size=self.model_config.audio_transform_hidden_dim, num_layers=self.model_config.audio_transform_num_layers, output_seq_len=self.model_config.audio_output_seq_len, output_size=self.model_config.audio_transform_output_dim)
-        self.transform_video_to_hidden = LSTM_fc(input_size=768, hidden_size=self.model_config.video_transform_hidden_dim, num_layers=self.model_config.video_transform_num_layers, output_seq_len=self.model_config.video_output_seq_len, output_size=self.model_config.video_transform_output_dim)
+        self.transform_audio_to_hidden = LSTM_fc(input_size=768,
+                                                 hidden_size=self.model_config.audio_transform_hidden_dim,
+                                                 num_layers=self.model_config.audio_transform_num_layers,
+                                                 output_seq_len=self.model_config.audio_output_seq_len,
+                                                 output_size=self.model_config.audio_transform_output_dim)
+        self.transform_video_to_hidden = LSTM_fc(input_size=768,
+                                                 hidden_size=self.model_config.video_transform_hidden_dim,
+                                                 num_layers=self.model_config.video_transform_num_layers,
+                                                 output_seq_len=self.model_config.video_output_seq_len,
+                                                 output_size=self.model_config.video_transform_output_dim)
 
-        self.gate_fusion = Gate_Attention(num_hidden_a=self.model_config.audio_transform_output_dim, num_hidden_b=self.model_config.video_transform_output_dim, num_hidden=self.model_config.fusion_output_dim)
-        self.aspect_head = FC_head(num_classes=7, hidden_dim=self.model_config.linear_layer_hidden_dim, llm_embed_dim=self.model_config.fusion_output_dim, add_pooling=self.model_config.add_pooling)
-        self.complaint_head = FC_head(num_classes=2, hidden_dim=self.model_config.linear_layer_hidden_dim, llm_embed_dim=self.model_config.fusion_output_dim, add_pooling=self.model_config.add_pooling)
+        self.gate_fusion = Gate_Attention(num_hidden_a=self.model_config.audio_transform_output_dim,
+                                          num_hidden_b=self.model_config.video_transform_output_dim,
+                                          num_hidden=self.model_config.fusion_output_dim)
+        self.aspect_head = FC_head(num_classes=7, hidden_dim=self.model_config.linear_layer_hidden_dim,
+                                   llm_embed_dim=self.model_config.fusion_output_dim,
+                                   add_pooling=self.model_config.add_pooling)
+        self.complaint_head = FC_head(num_classes=2, hidden_dim=self.model_config.linear_layer_hidden_dim,
+                                      llm_embed_dim=self.model_config.fusion_output_dim,
+                                      add_pooling=self.model_config.add_pooling)
 
         self.max_txt_len = self.model_config.max_txt_len
 
@@ -88,7 +104,7 @@ class MAACA(BaseModel):
                 text.input_ids.shape, dtype=torch.long, device=self.device
             ),
         )
-        text_embeds = text_output.last_hidden_state # (b, text, 768)
+        text_embeds = text_output.last_hidden_state  # (b, text, 768)
 
         text_output2 = self.text_encoder2.forward_text(
             text,
@@ -96,7 +112,7 @@ class MAACA(BaseModel):
                 text.input_ids.shape, dtype=torch.long, device=self.device
             ),
         )
-        text_embeds2 = text_output2.last_hidden_state # (b, text, 768)
+        text_embeds2 = text_output2.last_hidden_state  # (b, text, 768)
 
         # forward visual
         # timeSformer asks for (b, c, t, h, w) as input.
@@ -119,8 +135,8 @@ class MAACA(BaseModel):
             mode="fusion",
         )
 
-        audio_embeds = self.audio_encoder(audio_inputs).last_hidden_state # b, 1500, 768
-        audio_embeds = self.transform_audio_to_hidden(audio_embeds) # b, 128, 768
+        audio_embeds = self.audio_encoder(audio_inputs).last_hidden_state  # b, 1500, 768
+        audio_embeds = self.transform_audio_to_hidden(audio_embeds)  # b, 128, 768
         audio_atts = torch.ones(audio_embeds.size()[:-1], dtype=torch.long).to(
             self.device
         )
@@ -183,8 +199,8 @@ class MAACA(BaseModel):
         )
 
         num_patches = (
-            visual_encoder_config["image_size"] // visual_encoder_config["patch_size"]
-        ) ** 2
+                              visual_encoder_config["image_size"] // visual_encoder_config["patch_size"]
+                      ) ** 2
         num_frames = visual_encoder_config["n_frms"]
 
         model.load_checkpoint_from_config(

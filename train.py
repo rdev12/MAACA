@@ -10,6 +10,7 @@ from src.utils.load import load_preprocess, load_model_from_config
 
 transformers.logging.set_verbosity_info()
 
+
 @dataclass
 class DataArguments:
     video_dir: str = "data/video/"
@@ -18,6 +19,7 @@ class DataArguments:
     val_csv_dir: str = "data/data_val.csv"
     intervals_path: str = "data/predicted_time_intervals.csv"
     device: str = "cuda:0"
+
 
 @dataclass
 class ModelArguments:
@@ -35,6 +37,7 @@ class ModelArguments:
     linear_layer_hidden_dim: int = 64
     add_pooling: bool = False
     max_txt_len: int = 128
+
 
 @dataclass
 class TrainingArgumentsExtra(TrainingArguments):
@@ -54,6 +57,7 @@ class TrainingArgumentsExtra(TrainingArguments):
     load_best_model_at_end: bool = True
     save_total_limit: int = 1
     early_stopping_patience: int = 2
+
 
 def compute_metrics(p):
     label_ids = p.label_ids
@@ -75,6 +79,7 @@ def compute_metrics(p):
         stats.update(stat)
 
     return stats
+
 
 if __name__ == "__main__":
     parser = HfArgumentParser((ModelArguments, DataArguments, TrainingArgumentsExtra))

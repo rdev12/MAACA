@@ -18,9 +18,15 @@ importance of each feature through a gating mechanism.
 - Extensive experiments conducted on the VCD dataset demonstrate the significant superiority of our framework over existing multimodal baselines, providing valuable insights into
 the application of multimodal representation learning frameworks for downstream tasks.
 
+## Model Architecture
+
+![ACM Multimedia Model](images/ACMM_Model.png)
   
 ## Dataset
-The Video Complaint Dataset (VCD) is a novel resource aimed at advancing research in aspect-level complaint detection from video. The dataset is made avaliable under the `data` folder. 
+The Video Complaint Dataset (VCD) is a novel resource aimed at advancing research in aspect-level complaint detection from video. 
+The CSV files containing the train and test split used in the paper is made available under the `data` folder.
+The audio and corresponding video for each video clip can be obtained by running the `download_data.sh` script.
+The corresponding moment retrieved timestamps are obtained from running CGDETR model on the video clips.
 
 ## How to Run
 
