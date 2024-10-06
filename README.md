@@ -25,8 +25,8 @@ the application of multimodal representation learning frameworks for downstream 
   
 ## Dataset
 The Video Complaint Dataset (VCD) is a novel resource aimed at advancing research in aspect-level complaint detection from video. 
-The CSV files containing the train and test split used in the paper is made available under the `data` folder.
-The audio and corresponding video for each video clip can be obtained by running the `download_data.sh` script.
+The CSV files containing the train and test split used in the paper is made available under the `data` folder. The combined csv file represents the VCD dataset.
+The audio and corresponding video for each video clip can be obtained by running the `download_video.py` script.
 The corresponding moment retrieved timestamps are obtained from running CGDETR model on the video clips.
 
 ### Download Video and Audio Data
@@ -40,6 +40,10 @@ python download_video.py --data_train="data/data_train.csv" \
                          --video_dir="data/video" \
                          --audio_dir="data/audio"
 ```
+### Moment Retrieval
+`predicted_time_intervals.csv` contains the predicted time intervals for each video clip obtained from the CGDETR model. 
+To obtain the predicted time intervals yourself, clone the CGDETR repository and run [`run_on_video/run.py`](https://github.com/wjun0830/CGDETR/blob/main/run_on_video/run.py) with prompts being simply the name of the category of products in the dataset ("Phone", "Laptop", "Camera"). 
+Then, the time frame corresponding to the highest saliency score across all the prompts is taken. 
 
 ## How to Run
 ### Install Requirements
@@ -49,7 +53,7 @@ pip install -r requirements.txt
 ```
 
 ### Training
-Ensure you have the necessary CSV files (data_train.csv, data_val.csv, and predicted_time_intervals.csv) in the data directory.
+Ensure you have the necessary CSV files (`data_train.csv`, `data_val.csv`, and `predicted_time_intervals.csv`) in the data directory.
 
 Run the training script with the following command:
 ```sh
@@ -67,11 +71,11 @@ python train.py --pretraining False \
 ```
 
 Important Arguments 
-- `--pretraining`: Boolean flag to indicate if pretraining should be performed. 
-- `--video_dir`: Directory containing the video files. 
-- `--audio_dir`: Directory containing the audio files. 
-- `--train_csv_dir`: Path to the training CSV file. 
-- `--val_csv_dir`: Path to the validation CSV file. 
+- `--pretraining`: Boolean flag to indicate if pretraining should be performed. If set to true, the code will perform pretraining with MAACAPretrain Model otherwise it will perform training with MAACA.
+- `--video_dir`: Directory containing the video files. Default is `data/video`.
+- `--audio_dir`: Directory containing the audio files. Default is `data/audio`.
+- `--train_csv_dir`: Path to the training CSV file. Default is `data/data_train.csv`.
+- `--val_csv_dir`: Path to the validation CSV file. Default is `data/data_val.csv`.
 - `--intervals_path`: Path to the CSV file containing predicted time intervals. 
 - `--device`: Device to run the training on (e.g., `cuda:0` for GPU or `cpu` for CPU). 
 - `--run_name`: Name of the training run. 
