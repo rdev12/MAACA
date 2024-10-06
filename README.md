@@ -81,15 +81,24 @@ Important Arguments
 This will start the training process using the specified configurations and dataset. The model and metrics will be saved in the output directory.
 
 
-## Citation
+[//]: # (## Citation)
 
-If you find this repo useful, please cite our paper:
+[//]: # ()
+[//]: # (If you find this repo useful, please cite our paper:)
 
-```bibtex
-@inproceedings{maaca,
-  title={Seeing Beyond Words: Multimodal Aspect-Level Complaint Detection in Ecommerce Videos},
-  author={Anonymous},
-  booktitle={Anonymous},
-  year={2024}
-}
-```
+[//]: # ()
+[//]: # (```bibtex)
+
+[//]: # (@inproceedings{maaca,)
+
+[//]: # (  title={Seeing Beyond Words: Multimodal Aspect-Level Complaint Detection in Ecommerce Videos},)
+
+[//]: # (  author={Anonymous},)
+
+[//]: # (  booktitle={Anonymous},)
+
+[//]: # (  year={2024})
+
+[//]: # (})
+
+[//]: # (```)
