@@ -1,7 +1,7 @@
 from omegaconf import OmegaConf
 from transformers import WhisperFeatureExtractor
-from src.model.alpro_qa_audio2 import MAACA
-from src.model.alpro_retrieval2 import MAACAPretrain
+from src.model.maaca import MAACA
+from src.model.maaca_pretrain import MAACAPretrain
 from src.processors.alpro_processors import AlproVideoEvalProcessor, AlproVideoTrainProcessor
 from src.processors.blip_processors import BlipCaptionProcessor
 def load_model_from_config(config_file, cmd_config, is_eval=False, device="cpu", checkpoint=None):

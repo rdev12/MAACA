@@ -1,4 +1,5 @@
 # MAACA: Multimodal Aspect-Aware Complaint Analysis for E-commerce Video-based Product Reviews
+[Dataset](data/) | [Presentation](Presentation.pdf) | [Paper](https://openreview.net/pdf/1ef5082841dc737c3f0dfbc4617fc60c8c2d59a3.pdf)
 
 This repo is the official implementation and dataset for the ACM Multimedia 2024 paper ["Seeing Beyond Words: Multimodal Aspect-Level Complaint
 Detection in Ecommerce Videos"](https://openreview.net/pdf/1ef5082841dc737c3f0dfbc4617fc60c8c2d59a3.pdf).
@@ -28,7 +29,56 @@ The CSV files containing the train and test split used in the paper is made avai
 The audio and corresponding video for each video clip can be obtained by running the `download_data.sh` script.
 The corresponding moment retrieved timestamps are obtained from running CGDETR model on the video clips.
 
+### Download Video and Audio Data
+`download_video.py` downloads videos and extracts audio from a combined CSV file containing video links and timestamps.
+
+Run the script with the following command:
+
+```sh
+python download_video.py --data_train="data/data_train.csv" \ 
+                         --data_val="data/data_val.csv" \
+                         --video_dir="data/video" \
+                         --audio_dir="data/audio"
+```
+
 ## How to Run
+### Install Requirements
+Install the required Python libraries:
+```sh
+pip install -r requirements.txt
+```
+
+### Training
+Ensure you have the necessary CSV files (data_train.csv, data_val.csv, and predicted_time_intervals.csv) in the data directory.
+
+Run the training script with the following command:
+```sh
+python train.py --pretraining False \
+                --video_dir data/video \
+                --audio_dir data/audio \
+                --train_csv_dir data/data_train.csv \
+                --val_csv_dir data/data_val.csv \
+                --intervals_path data/predicted_time_intervals.csv \
+                --device cuda:0 \
+                --run_name maaca \
+                --output_dir output/maaca \
+                --num_train_epochs 15 \
+                
+```
+
+Important Arguments 
+- `--pretraining`: Boolean flag to indicate if pretraining should be performed. 
+- `--video_dir`: Directory containing the video files. 
+- `--audio_dir`: Directory containing the audio files. 
+- `--train_csv_dir`: Path to the training CSV file. 
+- `--val_csv_dir`: Path to the validation CSV file. 
+- `--intervals_path`: Path to the CSV file containing predicted time intervals. 
+- `--device`: Device to run the training on (e.g., `cuda:0` for GPU or `cpu` for CPU). 
+- `--run_name`: Name of the training run. 
+- `--output_dir`: Directory to save the output of the training. 
+- `--num_train_epochs`: Number of epochs to train the model. 
+
+This will start the training process using the specified configurations and dataset. The model and metrics will be saved in the output directory.
 
 
 ## Citation

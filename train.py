@@ -10,7 +10,6 @@ from src.utils.load import load_preprocess, load_model_from_config
 
 transformers.logging.set_verbosity_info()
 
-
 @dataclass
 class DataArguments:
     video_dir: str = "data/video/"
@@ -38,7 +37,6 @@ class ModelArguments:
     add_pooling: bool = False
     max_txt_len: int = 128
 
-
 @dataclass
 class TrainingArgumentsExtra(TrainingArguments):
     run_name: str = "maaca"
@@ -57,7 +55,6 @@ class TrainingArgumentsExtra(TrainingArguments):
     load_best_model_at_end: bool = True
     save_total_limit: int = 1
     early_stopping_patience: int = 2
-
 
 def compute_metrics(p):
     label_ids = p.label_ids
@@ -79,7 +76,6 @@ def compute_metrics(p):
         stats.update(stat)
 
     return stats
-
 
 if __name__ == "__main__":
     parser = HfArgumentParser((ModelArguments, DataArguments, TrainingArgumentsExtra))

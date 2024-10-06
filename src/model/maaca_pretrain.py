@@ -12,7 +12,7 @@ from omegaconf import OmegaConf
 from transformers import BertTokenizer
 from transformers import WhisperModel
 
-from src.model.alpro_outputs import AlproIntermediateOutput, AlproOutput
+from src.model.model_output import AlproIntermediateOutput, AlproOutput
 from src.model.med import XBertEncoder
 from src.model.timesformer.vit import TimeSformer
 from src.model.lstm_compression import LSTM_fc

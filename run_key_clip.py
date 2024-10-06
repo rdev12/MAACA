@@ -40,16 +40,10 @@ class CGDETRPredictor:
             query_list: List[str], each str is a query for this video
         """
         # construct model inputs
-        # import pdb
-        # pdb.set_trace()
-
         n_query = len(query_list)
         video_feats = self.feature_extractor.encode_video(video_path, start_time, end_time)
         video_feats = F.normalize(video_feats, dim=-1, eps=1e-5)
         n_frames = len(video_feats)
-
-        # import pdb
-        # pdb.set_trace()
 
         # add tef
         tef_st = torch.arange(0, n_frames, 1.0) / n_frames #(n_frames, ) =>  evenly spaced values btw [0,1)
@@ -73,8 +67,6 @@ class CGDETRPredictor:
             vid=None,
             qid=None
         )
-        # print(model_inputs)
-        # print(self.model.transformer.device)
 
         # decode outputs
         outputs = self.model(**model_inputs)
@@ -174,16 +166,11 @@ def run_example():
         queries = load_jsonl(query_path)
     query_text_list = [e["query"] for e in queries]
 
-
-
-
-
     ckpt_path = "./run_on_video/CLIP_ckpt/qvhighlights_onlyCLIP/model_best.ckpt"
 
     # run predictions
     print("Build models...")
     clip_model_name_or_path = "ViT-B/32"
-    # clip_model_name_or_path = "tmp/ViT-B-32.pt"
     cg_detr_predictor = CGDETRPredictor(
         ckpt_path=ckpt_path,
         clip_model_name_or_path=clip_model_name_or_path,
@@ -249,7 +236,6 @@ def run_example():
 
     df_result = pd.DataFrame(predicted_intervals)
     df_result.set_index("index")
-    # df_result.drop(columns=["Unnamed: 0"], inplace=True)
     df_result.to_csv("predicted_time_intervals1.csv")
 
 

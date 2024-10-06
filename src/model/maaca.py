@@ -12,7 +12,7 @@ from omegaconf import OmegaConf
 from transformers import BertTokenizer
 from transformers import WhisperModel
 
-from src.model.alpro_outputs import AlproIntermediateOutput, AlproOutputWithLogits
+from src.model.model_output import AlproIntermediateOutput, AlproOutputWithLogits
 from src.model.med import XBertEncoder
 from src.model.timesformer.vit import TimeSformer
 from src.model.gate_fusion import Gate_Attention
